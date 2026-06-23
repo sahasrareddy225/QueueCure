@@ -1,0 +1,25 @@
+services:
+  # ── Backend Service ──
+  - type: web
+    name: queuecure-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false # You'll need to enter this manually in the Render dashboard
+
+  # ── Frontend Service ──
+  - type: web
+    name: queuecure-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: queuecure-backend
+          envVarKey: RENDER_EXTERNAL_URL
